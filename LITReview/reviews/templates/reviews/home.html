@@ -6,10 +6,31 @@
     <a href="">Créer une critique</a>
 
     {% for ticket in tickets %}
-        <p>{{ ticket.user }} a demandé une critique</p>
+        <p>{{ ticket.user }} a demandé une critique - {{ ticket.time_created }}</p>
         <p>{{ ticket.title }}</p>
         <p>{{ ticket.description }}</p>
 <!--        <img src="{{ ticket.image }}">-->
+        <br>
+        <p> - - - - - - - - - - - </p>
+        <br>
+
+    {% endfor %}
+
+
+
+    {% for review in reviews %}
+        <p>{{ review.user }} a publié une critique - {{ review.time_created }}</p>
+        <p>{{ review.headline }} - {{ review.rating }}</p>
+        <p>{{ review.body }}</p>
+        <br>
+        <p>{{ review.ticket.user }} a demandé une critique - {{ review.ticket.time_created }}</p>
+        <p>{{ review.ticket.title }}</p>
+        <p>{{ review.ticket.description }}</p>
+
+        <br>
+        <p> - - - - - - - - - - - </p>
+        <br>
+
     {% endfor %}
 
 {% endblock content %}
