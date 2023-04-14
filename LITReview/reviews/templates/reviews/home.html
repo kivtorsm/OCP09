@@ -10,13 +10,12 @@
         <p>{{ ticket.title }}</p>
         <p>{{ ticket.description }}</p>
 <!--        <img src="{{ ticket.image }}">-->
+        <a href="" >Créer une critique</a>
         <br>
         <p> - - - - - - - - - - - </p>
         <br>
 
     {% endfor %}
-
-
 
     {% for review in reviews %}
         <p>{{ review.user }} a publié une critique - {{ review.time_created }}</p>
