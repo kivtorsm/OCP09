@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -18,9 +20,14 @@ def home(request):
         Q(user__in=followed_users) | Q(user=request.user)
     ).exclude(review__in=reviews)
 
+    tickets_and_reviews = sorted(
+        chain(tickets, reviews),
+        key=lambda instance: instance.time_created,
+        # TODO: Question, comment faire si le nom de champ n'est pas identique ?
+        reverse=True
+    )
+
     context = {
-        'tickets': tickets,
-        'reviews': reviews
+        'tickets_and_reviews': tickets_and_reviews
     }
     return render(request, 'reviews/home.html', context)
-

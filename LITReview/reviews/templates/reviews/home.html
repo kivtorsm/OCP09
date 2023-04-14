@@ -1,34 +1,19 @@
 {% extends 'base.html' %}
+{% load reviews_extras %}
 {% block content %}
     <br>
     <br>
     <a href="">Demander une critique</a>
     <a href="">Créer une critique</a>
+<!-- TODO: Ajouter liens -->
 
-    {% for ticket in tickets %}
-        <p>{{ ticket.user }} a demandé une critique - {{ ticket.time_created }}</p>
-        <p>{{ ticket.title }}</p>
-        <p>{{ ticket.description }}</p>
-<!--        <img src="{{ ticket.image }}">-->
-        <a href="" >Créer une critique</a>
-        <br>
-        <p> - - - - - - - - - - - </p>
-        <br>
+    {% for instance in tickets_and_reviews %}
+        {% if instance|model_type == 'Ticket' %}
+            {% include 'reviews/partials/ticket_snippet.html' with ticket=instance %}
 
-    {% endfor %}
-
-    {% for review in reviews %}
-        <p>{{ review.user }} a publié une critique - {{ review.time_created }}</p>
-        <p>{{ review.headline }} - {{ review.rating }}</p>
-        <p>{{ review.body }}</p>
-        <br>
-        <p>{{ review.ticket.user }} a demandé une critique - {{ review.ticket.time_created }}</p>
-        <p>{{ review.ticket.title }}</p>
-        <p>{{ review.ticket.description }}</p>
-
-        <br>
-        <p> - - - - - - - - - - - </p>
-        <br>
+        {% elif instance|model_type == 'Review' %}
+            {% include 'reviews/partials/review_snippet.html' with review=instance %}
+        {% endif %}
 
     {% endfor %}
 

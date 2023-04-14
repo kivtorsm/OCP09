@@ -1,0 +1,13 @@
+{% load reviews_extras %}
+
+<div class="ticket">
+    <p>{% get_poster_display ticket.user %} demandé une critique - {{ ticket.time_created }}</p>
+    <p>{{ ticket.title }}</p>
+    <p>{{ ticket.description }}</p>
+<!--        <img src="{{ ticket.image }}">-->
+<!--        TODO: ajouter image -->
+    <a href="" >Créer une critique</a>
+<!-- TODO: Ajouter liens -->
+    <p> - - - - - - - - - - - </p>
+
+</div>
