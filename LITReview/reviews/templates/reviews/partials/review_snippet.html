@@ -4,6 +4,11 @@
     <p>{% get_poster_display review.user %} publié une critique - {{ review.time_created }}</p>
     <p>{{ review.headline }} - {{ review.rating }}</p>
     <p>{{ review.body }}</p>
+    {% if page == 'my_posts' %}
+        <a href="">Modifier</a>
+        <a href="">Supprimer</a>
+<!--    TODO : compléter liens -->
+    {% endif %}
     <br>
 
     {% include 'reviews/partials/ticket_snippet.html' with ticket=review.ticket %}

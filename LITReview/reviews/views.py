@@ -28,6 +28,34 @@ def home(request):
     )
 
     context = {
-        'tickets_and_reviews': tickets_and_reviews
+        'tickets_and_reviews': tickets_and_reviews,
+        'page': 'home',
+        'user': request.user,
     }
     return render(request, 'reviews/home.html', context)
+
+
+def my_posts(request):
+
+    reviews = models.Review.objects.filter(user=request.user)
+
+    tickets = models.Ticket.objects.filter(
+        user=request.user)
+
+    tickets_and_reviews = sorted(
+        chain(tickets, reviews),
+        key=lambda instance: instance.time_created,
+        reverse=True
+    )
+
+    context = {
+        'tickets_and_reviews': tickets_and_reviews,
+        'page': 'my_posts',
+        'user': request.user,
+    }
+    return render(request, 'reviews/posts.html', context)
+
+
+def follows(request):
+    pass
+

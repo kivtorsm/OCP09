@@ -6,8 +6,14 @@
     <p>{{ ticket.description }}</p>
 <!--        <img src="{{ ticket.image }}">-->
 <!--        TODO: ajouter image -->
-    <a href="" >Créer une critique</a>
+    {% if page == 'my_posts' and ticket.user == user %}
+        <a href="">Modifier</a>
+        <a href="">Supprimer</a>
+<!--    TODO: compléter liens -->
+    {% elif page == 'home' and review == None %}
+        <a href="" >Créer une critique</a>
 <!-- TODO: Ajouter liens -->
+    {% endif %}
     <p> - - - - - - - - - - - </p>
 
 </div>

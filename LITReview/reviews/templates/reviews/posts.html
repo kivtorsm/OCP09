@@ -3,14 +3,11 @@
 {% block content %}
     <br>
     <br>
-    <a href="">Demander une critique</a>
-    <a href="">Créer une critique</a>
-<!-- TODO: Ajouter liens -->
+    <h1>Vos posts</h1>
 
     {% for instance in tickets_and_reviews %}
         {% if instance|model_type == 'Ticket' %}
-            {% include 'reviews/partials/ticket_snippet.html' with ticket=instance review=None %}
-
+            {% include 'reviews/partials/ticket_snippet.html' with ticket=instance %}
         {% elif instance|model_type == 'Review' %}
             {% include 'reviews/partials/review_snippet.html' with review=instance %}
         {% endif %}
