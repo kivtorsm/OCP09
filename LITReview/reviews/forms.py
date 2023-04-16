@@ -3,15 +3,15 @@ from django import forms
 from . import models
 
 
-class TicketForm(forms.modelForm):
+class TicketForm(forms.ModelForm):
     class Meta:
         model = models.Ticket
-        fields = ['title', 'description', 'user', 'image', 'time_created']
+        fields = ['title', 'description', 'image']
 
 
-class ReviewForm(forms.modelForm):
+class ReviewForm(forms.ModelForm):
     class Meta:
         model = models.Review
-        fields = ['ticket', 'rating', 'headline', 'body', 'user', 'time_created']
+        fields = ['ticket', 'rating', 'headline', 'body', 'user']
 
 

@@ -1,10 +1,10 @@
 from itertools import chain
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from . import models
+from . import models, forms
 
 
 @login_required
@@ -35,7 +35,8 @@ def home(request):
     return render(request, 'reviews/home.html', context)
 
 
-def my_posts(request):
+@login_required()
+def posts(request):
 
     reviews = models.Review.objects.filter(user=request.user)
 
@@ -56,6 +57,26 @@ def my_posts(request):
     return render(request, 'reviews/posts.html', context)
 
 
+@login_required()
+def new_ticket(request):
+    ticket_form = forms.TicketForm()
+    if request.method == 'POST':
+        post = request.POST.copy()
+        post['user'] = request.user.id
+        ticket_form = forms.TicketForm(post)
+        if ticket_form.is_valid():
+            validated_form = ticket_form.save(commit=False)
+            validated_form.user = request.user
+            validated_form.save()
+            return redirect('home')
+    context = {
+        'ticket_form': ticket_form,
+        'user': request.user,
+    }
+    return render(request, 'reviews/new_ticket.html', context=context)
+
+
+@login_required()
 def follows(request):
     pass
 
