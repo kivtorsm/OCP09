@@ -29,6 +29,12 @@ urlpatterns = [
     path('logout/', authentication.views.logout_user, name='logout'),
     path('home/', reviews.views.home, name='home'),
     path('signup/', authentication.views.signup_page, name='signup'),
+    path('posts/', reviews.views.posts, name='posts'),
+    path('follows/', reviews.views.follows, name='follows'),
+    path('posts/new_ticket/', reviews.views.new_ticket, name='new_ticket'),
+    # path('posts/update_ticket/', reviews.views.update_ticket, name='update_ticket'),
+    # path('posts/new_review/', reviews.views.new_review, name='new_review'),
+    # path('posts/update_review/', reviews.views.update_review, name='update_review'),
 
 ]
 
