@@ -57,13 +57,26 @@ def posts(request):
     return render(request, 'reviews/posts.html', context)
 
 
+@login_required
+def photo_upload(request):
+    form = forms.PhotoForm()
+    if request.method == 'POST':
+        form = forms.PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            # set the uploader to the user before saving the model
+            photo.uploader = request.user
+            # now we can save
+            photo.save()
+            return redirect('home')
+    return render(request, 'blog/photo_upload.html', context={'form': form})
+
+
 @login_required()
 def new_ticket(request):
     ticket_form = forms.TicketForm()
     if request.method == 'POST':
-        post = request.POST.copy()
-        post['user'] = request.user.id
-        ticket_form = forms.TicketForm(post)
+        ticket_form = forms.TicketForm(request.POST, request.FILES)
         if ticket_form.is_valid():
             validated_form = ticket_form.save(commit=False)
             validated_form.user = request.user

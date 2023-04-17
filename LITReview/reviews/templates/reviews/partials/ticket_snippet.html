@@ -4,8 +4,10 @@
     <p>{% get_poster_display ticket.user %} demandé une critique - {{ ticket.time_created }}</p>
     <p>{{ ticket.title }}</p>
     <p>{{ ticket.description }}</p>
-<!--        <img src="{{ ticket.image }}">-->
-<!--        TODO: ajouter image -->
+    {% if ticket.image %}
+        <img src="{{ ticket.image.url }}">
+
+    {% endif %}
     {% if page == 'my_posts' and ticket.user == user %}
         <a href="">Modifier</a>
         <a href="">Supprimer</a>
