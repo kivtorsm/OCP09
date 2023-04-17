@@ -90,6 +90,29 @@ def new_ticket(request):
 
 
 @login_required()
+def create_ticket_plus_review(request):
+    ticket_form = forms.TicketForm()
+    review_form = forms.ReviewForm()
+    if request.method == 'POST':
+        ticket_form = forms.TicketForm(request.POST, request.FILES)
+        review_form = forms.ReviewForm(request.POST)
+        if all([ticket_form.is_valid(), review_form.is_valid()]):
+            ticket = ticket_form.save(commit=False)
+            ticket.user = request.user
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.ticket = ticket
+            ticket.save()
+            review.save()
+            return redirect('home')
+    context = {
+        'ticket_form': ticket_form,
+        'review_form': review_form,
+    }
+    return render(request, 'reviews/create_ticket_plus_review.html', context=context)
+
+
+@login_required()
 def follows(request):
     pass
 

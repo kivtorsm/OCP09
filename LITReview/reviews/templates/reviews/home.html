@@ -4,7 +4,7 @@
     <br>
     <br>
     <a href="{% url 'new_ticket' %}">Demander une critique</a>
-    <a href="">Créer une critique</a>
+    <a href="{% url 'create_ticket_plus_review'%}">Créer une critique</a>
 
     {% for instance in tickets_and_reviews %}
         {% if instance|model_type == 'Ticket' %}
