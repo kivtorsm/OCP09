@@ -9,11 +9,11 @@
 
     {% endif %}
     {% if page == 'my_posts' and ticket.user == user %}
-        <a href="">Modifier</a>
+        <a href="{% url 'edit_ticket' ticket.id %}">Modifier</a>
         <a href="">Supprimer</a>
 <!--    TODO: compléter liens -->
     {% elif page == 'home' and review == None %}
-        <a href="" >Créer une critique</a>
+        <a href="{% url 'create_review' ticket.id %}" >Créer une critique</a>
 <!-- TODO: Ajouter liens -->
     {% endif %}
     <p> - - - - - - - - - - - </p>

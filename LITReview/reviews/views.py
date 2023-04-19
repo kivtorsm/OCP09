@@ -1,6 +1,6 @@
 from itertools import chain
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
@@ -57,21 +57,6 @@ def posts(request):
     return render(request, 'reviews/posts.html', context)
 
 
-@login_required
-def photo_upload(request):
-    form = forms.PhotoForm()
-    if request.method == 'POST':
-        form = forms.PhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            photo = form.save(commit=False)
-            # set the uploader to the user before saving the model
-            photo.uploader = request.user
-            # now we can save
-            photo.save()
-            return redirect('home')
-    return render(request, 'blog/photo_upload.html', context={'form': form})
-
-
 @login_required()
 def new_ticket(request):
     ticket_form = forms.TicketForm()
@@ -87,6 +72,29 @@ def new_ticket(request):
         'user': request.user,
     }
     return render(request, 'reviews/new_ticket.html', context=context)
+
+
+@login_required
+def edit_ticket(request, ticket_id):
+    ticket = get_object_or_404(models.Ticket, id=ticket_id)
+    edit_form = forms.TicketForm(instance=ticket)
+    delete_form = forms.DeleteTicketForm()
+    if request.method == 'POST':
+        if 'edit_ticket' in request.POST:
+            edit_form = forms.TicketForm(request.POST, instance=ticket)
+            if edit_form.is_valid():
+                edit_form.save()
+                return redirect('home')
+        elif 'delete_ticket' in request.POST:
+            delete_form = forms.DeleteTicketForm(request.POST)
+            if delete_form.is_valid():
+                ticket.delete()
+                return redirect('home')
+    context = {
+        'edit_form': edit_form,
+        'delete_form': delete_form,
+    }
+    return render(request, 'reviews/edit_ticket.html', context=context)
 
 
 @login_required()
@@ -110,6 +118,50 @@ def create_ticket_plus_review(request):
         'review_form': review_form,
     }
     return render(request, 'reviews/create_ticket_plus_review.html', context=context)
+
+
+@login_required
+def create_review(request, ticket_id):
+    review_form = forms.ReviewForm()
+    ticket = get_object_or_404(models.Ticket, id=ticket_id)
+    if request.method == 'POST':
+        review_form = forms.ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.ticket = ticket
+            review.save()
+            return redirect('home')
+    context = {
+        'ticket': ticket,
+        'review_form': review_form,
+    }
+    return render(request, 'reviews/create_review.html', context=context)
+
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(models.Review, id=review_id)
+    edit_form = forms.ReviewForm(instance=review)
+    ticket = get_object_or_404(models.Ticket, id=review.ticket.id)
+    delete_form = forms.DeleteReviewForm()
+    if request.method == 'POST':
+        if 'edit_review' in request.POST:
+            edit_form = forms.ReviewForm(request.POST, instance=review)
+            if edit_form.is_valid():
+                edit_form.save()
+                return redirect('home')
+        elif 'delete_review' in request.POST:
+            delete_form = forms.DeleteReviewForm(request.POST)
+            if delete_form.is_valid():
+                review.delete()
+                return redirect('home')
+    context = {
+        'edit_form': edit_form,
+        'delete_form': delete_form,
+        'ticket': ticket,
+    }
+    return render(request, 'reviews/edit_review.html', context=context)
 
 
 @login_required()
