@@ -5,11 +5,6 @@ from django.conf import settings
 from django.db import models
 
 
-class Photo(models.Model):
-    image = models.ImageField()
-    date_created = models.DateTimeField(auto_now_add=True)
-
-
 class Ticket(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2048)
