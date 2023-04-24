@@ -87,7 +87,7 @@ def edit_ticket(request, ticket_id):
 
 
 @login_required
-def delete_ticket(ticket_id):
+def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
     ticket.delete()
     return redirect('posts')
@@ -140,28 +140,21 @@ def edit_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
     edit_form = forms.ReviewForm(instance=review)
     ticket = get_object_or_404(models.Ticket, id=review.ticket.id)
-    delete_form = forms.DeleteReviewForm()
     if request.method == 'POST':
-        if 'edit_review' in request.POST:
-            edit_form = forms.ReviewForm(request.POST, instance=review)
-            if edit_form.is_valid():
-                edit_form.save()
-                return redirect('home')
-        elif 'delete_review' in request.POST:
-            delete_form = forms.DeleteReviewForm(request.POST)
-            if delete_form.is_valid():
-                review.delete()
-                return redirect('home')
+        edit_form = forms.ReviewForm(request.POST, instance=review)
+        if edit_form.is_valid():
+            edit_form.save()
+            return redirect('home')
+
     context = {
         'edit_form': edit_form,
-        'delete_form': delete_form,
-        'ticket': ticket,
+        'ticket': ticket
     }
     return render(request, 'reviews/edit_review.html', context=context)
 
 
 @login_required
-def delete_review(review_id):
+def delete_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
     review.delete()
     return redirect('posts')
@@ -169,10 +162,26 @@ def delete_review(review_id):
 
 @login_required()
 def follows(request):
+    follow_form = forms.UserFollowsForm()
     followed_users = models.UserFollows.objects.filter(user=request.user)
     following_users = models.UserFollows.objects.filter(followed_user=request.user)
+    if request.method == 'POST':
+        follow_form = forms.UserFollowsForm(request.POST)
+        if follow_form.is_valid():
+            user_follows = follow_form.save(commit=False)
+            user_follows.user = request.user
+            user_follows.save()
+            return redirect('follows')
     context = {
         'followed_users': followed_users,
         'following_users': following_users,
+        'follow_form': follow_form,
     }
     return render(request, 'reviews/follows.html', context=context)
+
+
+@login_required()
+def unfollow(request, user_follows_id):
+    user_follows = models.UserFollows(id=user_follows_id)
+    user_follows.delete()
+    return redirect('follows')
