@@ -32,9 +32,13 @@ urlpatterns = [
     path('posts/', reviews.views.posts, name='posts'),
     path('follows/', reviews.views.follows, name='follows'),
     path('posts/new_ticket/', reviews.views.new_ticket, name='new_ticket'),
-    # path('posts/update_ticket/', reviews.views.update_ticket, name='update_ticket'),
-    # path('posts/new_review/', reviews.views.new_review, name='new_review'),
-    # path('posts/update_review/', reviews.views.update_review, name='update_review'),
+    path('posts/ticket_<int:ticket_id>/edit_ticket/', reviews.views.edit_ticket, name='edit_ticket'),
+    path('posts/ticket_<int:ticket_id>/delete_ticket/', reviews.views.delete_ticket, name='delete_ticket'),
+    path(
+        'posts/create_ticket_plus_review/', reviews.views.create_ticket_plus_review, name='create_ticket_plus_review'),
+    path('posts/review_<int:review_id>/edit_review/', reviews.views.edit_review, name='edit_review'),
+    path('posts/review_<int:review_id>/delete_review/', reviews.views.delete_review, name='delete_review'),
+    path('posts/ticket_<int:ticket_id>/create_review/', reviews.views.create_review, name='create_review'),
 
 ]
 
