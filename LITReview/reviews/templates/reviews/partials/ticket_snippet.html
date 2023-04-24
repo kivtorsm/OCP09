@@ -8,13 +8,14 @@
         <img src="{{ ticket.image.url }}">
 
     {% endif %}
-    {% if page == 'my_posts' and ticket.user == user %}
+
+<!--Ticket_alone allows to show buttons only on tickets not attached to a review -->
+    {% if page == 'my_posts' and ticket.user == user and type == 'ticket_alone' %}
         <a href="{% url 'edit_ticket' ticket.id %}">Modifier</a>
-        <a href="">Supprimer</a>
-<!--    TODO: compléter liens -->
+        <a href="{% url 'delete_ticket' ticket.id %}">Supprimer</a>
+
     {% elif page == 'home' and review == None %}
         <a href="{% url 'create_review' ticket.id %}" >Créer une critique</a>
-<!-- TODO: Ajouter liens -->
     {% endif %}
     <p> - - - - - - - - - - - </p>
 

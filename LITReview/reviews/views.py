@@ -23,7 +23,6 @@ def home(request):
     tickets_and_reviews = sorted(
         chain(tickets, reviews),
         key=lambda instance: instance.time_created,
-        # TODO: Question, comment faire si le nom de champ n'est pas identique ?
         reverse=True
     )
 
@@ -37,9 +36,7 @@ def home(request):
 
 @login_required()
 def posts(request):
-
     reviews = models.Review.objects.filter(user=request.user)
-
     tickets = models.Ticket.objects.filter(
         user=request.user)
 
@@ -78,23 +75,22 @@ def new_ticket(request):
 def edit_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
     edit_form = forms.TicketForm(instance=ticket)
-    delete_form = forms.DeleteTicketForm()
     if request.method == 'POST':
-        if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, instance=ticket)
-            if edit_form.is_valid():
-                edit_form.save()
-                return redirect('home')
-        elif 'delete_ticket' in request.POST:
-            delete_form = forms.DeleteTicketForm(request.POST)
-            if delete_form.is_valid():
-                ticket.delete()
-                return redirect('home')
+        edit_form = forms.TicketForm(request.POST, instance=ticket)
+        if edit_form.is_valid():
+            edit_form.save()
+            return redirect('home')
     context = {
         'edit_form': edit_form,
-        'delete_form': delete_form,
     }
     return render(request, 'reviews/edit_ticket.html', context=context)
+
+
+@login_required
+def delete_ticket(ticket_id):
+    ticket = get_object_or_404(models.Ticket, id=ticket_id)
+    ticket.delete()
+    return redirect('posts')
 
 
 @login_required()
@@ -164,7 +160,19 @@ def edit_review(request, review_id):
     return render(request, 'reviews/edit_review.html', context=context)
 
 
+@login_required
+def delete_review(review_id):
+    review = get_object_or_404(models.Review, id=review_id)
+    review.delete()
+    return redirect('posts')
+
+
 @login_required()
 def follows(request):
-    pass
-
+    followed_users = models.UserFollows.objects.filter(user=request.user)
+    following_users = models.UserFollows.objects.filter(followed_user=request.user)
+    context = {
+        'followed_users': followed_users,
+        'following_users': following_users,
+    }
+    return render(request, 'reviews/follows.html', context=context)
