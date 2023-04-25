@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
 from . import models, forms
+from authentication.models import User
 
 
 @login_required
@@ -162,16 +163,24 @@ def delete_review(request, review_id):
 
 @login_required()
 def follows(request):
-    follow_form = forms.UserFollowsForm()
+    follow_form = forms.FollowForm()
     followed_users = models.UserFollows.objects.filter(user=request.user)
     following_users = models.UserFollows.objects.filter(followed_user=request.user)
     if request.method == 'POST':
-        follow_form = forms.UserFollowsForm(request.POST)
+        follow_form = forms.FollowForm(request.POST)
         if follow_form.is_valid():
-            user_follows = follow_form.save(commit=False)
-            user_follows.user = request.user
-            user_follows.save()
-            return redirect('follows')
+            followed_user = User.objects.get(username=follow_form.cleaned_data["followed_user"])
+            if followed_user == request.user:
+                return redirect('follows')
+            elif followed_user in [
+                User.objects.get(
+                    id=user.followed_user.id) for user in models.UserFollows.objects.filter(user=request.user)
+            ]:
+                return redirect('follows')
+            else:
+                user_follows = models.UserFollows(user=request.user, followed_user=followed_user)
+                user_follows.save()
+                return redirect('follows')
     context = {
         'followed_users': followed_users,
         'following_users': following_users,

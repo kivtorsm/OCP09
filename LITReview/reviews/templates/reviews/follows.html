@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Suivre d'autres utilisateurs</h2>
-    {{ follow_form.as_p }}
-    {% csrf_token %}
-    <button type="submit" >Sauvegarder</button>
-
+    <form method="post">
+        {{ follow_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Envoyer</button>
+    </form>
     <h2>Abonnements</h2>
     {% for user in followed_users %}
         <table>
             <tr>
-                <td>{{ user_follows.followed_user }}</td>
-                <td><a href="{% url 'unfollow' user_follows_id=user_follows.id %}">Désabonner</a> </td>
+                <td>{{ user.followed_user }}</td>
+                <td><a href="{% url 'unfollow' user_follows_id=user.id %}">Désabonner</a> </td>
             </tr>
         </table>
     {% endfor %}
