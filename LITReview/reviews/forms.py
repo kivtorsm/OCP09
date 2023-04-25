@@ -10,6 +10,11 @@ class TicketForm(forms.ModelForm):
     class Meta:
         model = models.Ticket
         fields = ['title', 'description', 'image']
+        labels = {
+            "title": "Titre",
+            "description": "Description",
+            "image": "Image"
+        }
 
 
 class ReviewForm(forms.ModelForm):
@@ -28,6 +33,11 @@ class ReviewForm(forms.ModelForm):
                 (5, "- 5")],
             )
         }
+        labels = {
+            "headline": "Titre de la critique",
+            "body": "Corps",
+            "rating": "Note"
+        }
 
 
 class FollowForm(forms.Form):
@@ -37,4 +47,6 @@ class FollowForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Nom d'utilisateur"
-            }))
+            }),
+        label=""
+    )
