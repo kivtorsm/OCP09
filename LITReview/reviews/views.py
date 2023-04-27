@@ -1,5 +1,6 @@
 from itertools import chain
 
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -90,8 +91,11 @@ def edit_ticket(request, ticket_id):
 @login_required
 def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
-    ticket.delete()
-    return redirect('posts')
+    if request.user == ticket.user:
+        ticket.delete()
+        return redirect('posts')
+    else:
+        raise PermissionDenied()
 
 
 @login_required()
@@ -157,8 +161,11 @@ def edit_review(request, review_id):
 @login_required
 def delete_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
-    review.delete()
-    return redirect('posts')
+    if request.user == review.user:
+        review.delete()
+        return redirect('posts')
+    else:
+        raise PermissionDenied()
 
 
 @login_required()
