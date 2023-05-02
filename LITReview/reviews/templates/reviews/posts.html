@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% load reviews_extras %}
 {% block content %}
-    <br>
-    <br>
-    <h1>Vos posts</h1>
+
+    <h2 class="container text-center mb-4">Vos posts</h2>
 
     {% for instance in tickets_and_reviews %}
         {% if instance|model_type == 'Ticket' %}

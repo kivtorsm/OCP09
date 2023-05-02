@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
-    <h2>Inscrivez-vous</h2>
+<br>
+    <h2 class="my-4 text-center">Inscrivez-vous</h2>
     {% if form.errors %}
         {{ form.errors }}
     {% endif %}
-    <form method="post">
-        {{ form.as_p }}
+    <form method="post" class="text-end">
+        {{ form|crispy }}
+<!--        {{ form.as_p }}-->
         {% csrf_token %}
-        <a href="{% url 'login' %}">Retourner</a>
-        <button type="submit" >S’inscrire</button>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary">Retourner</a>
+        <button type="submit" class="btn btn-primary" >S’inscrire</button>
     </form>
 {% endblock content %}

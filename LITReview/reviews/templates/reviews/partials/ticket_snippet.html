@@ -1,8 +1,22 @@
 {% load reviews_extras %}
 
-<div class="ticket">
-    <p>{% get_poster_display ticket.user %} demandé une critique - {{ ticket.time_created }}</p>
-    <p>{{ ticket.title }}</p>
+<div class="ticket shadow-sm p-3 mb-5 bg-body rounded">
+    <div class="row justify-content-between">
+        {% if caller == None %}
+            <div class="col">
+                <p>{% get_poster_display ticket.user %} publié une demande de critique </p>
+            </div>
+            <div class="col text-end">
+                <p>{{ ticket.time_created }}</p>
+            </div>
+        {% elif caller == "Review" %}
+            <div class="col">
+                <p>Ticket - {{ ticket.user }}</p>
+            </div>
+        {% endif %}
+
+    </div>
+    <p class="fs-5">{{ ticket.title }}</p>
     <p>{{ ticket.description }}</p>
     {% if ticket.image %}
         <img src="{{ ticket.image.url }}">
@@ -10,13 +24,16 @@
     {% endif %}
 
 <!--Ticket_alone allows to show buttons only on tickets not attached to a review -->
-    {% if page == 'my_posts' and ticket.user == user and type == 'ticket_alone' %}
-        <a href="{% url 'edit_ticket' ticket.id %}">Modifier</a>
-        <a href="{% url 'delete_ticket' ticket.id %}">Supprimer</a>
+    <div class="row">
+        <div class="col text-end">
+            {% if page == 'my_posts' and ticket.user == user and type == 'ticket_alone' %}
+                <a href="{% url 'edit_ticket' ticket.id %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'delete_ticket' ticket.id %}" class="btn btn-outline-primary">Supprimer</a>
+            {% elif page == 'home' and review == None %}
+                <a href="{% url 'create_review' ticket.id %}" class="btn btn-primary">Créer une critique</a>
+            {% endif %}
+        </div>
 
-    {% elif page == 'home' and review == None %}
-        <a href="{% url 'create_review' ticket.id %}" >Créer une critique</a>
-    {% endif %}
-    <p> - - - - - - - - - - - </p>
+    </div>
 
 </div>

@@ -13,7 +13,7 @@ class Ticket(models.Model):
     # image = models.ForeignKey(to=Photo, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
 
-    IMAGE_MAX_SIZE = (800, 800)
+    IMAGE_MAX_SIZE = (600, 600)
 
     def __str__(self):
         return f"{self.title}"

@@ -15,6 +15,20 @@ class TicketForm(forms.ModelForm):
             "description": "Description",
             "image": "Image"
         }
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'placeholder': 'Titre de la demande de critique',
+                'class': "form-control"
+            }),
+            'description': forms.Textarea(attrs={
+                'placeholder': 'Texte de la demande de critique',
+                'class': "form-control",
+                'rows': 5,
+            }),
+            'image': forms.FileInput(attrs={
+                'class': "form-control"
+            })
+        }
 
 
 class ReviewForm(forms.ModelForm):
@@ -24,14 +38,27 @@ class ReviewForm(forms.ModelForm):
         model = models.Review
         fields = ['headline', 'body', 'rating']
         widgets = {
-            'rating': forms.RadioSelect(choices=[
-                (0, "- 0"),
-                (1, "- 1"),
-                (2, "- 2"),
-                (3, "- 3"),
-                (4, "- 4"),
-                (5, "- 5")],
-            )
+            'rating': forms.RadioSelect(
+                choices=[
+                    (0, "- 0"),
+                    (1, "- 1"),
+                    (2, "- 2"),
+                    (3, "- 3"),
+                    (4, "- 4"),
+                    (5, "- 5")],
+                attrs={
+                    'class': "form-check form-check-inline",
+                },
+            ),
+            'headline': forms.TextInput(attrs={
+                'placeholder': 'Titre de la critique',
+                'class': "form-control"
+            }),
+            'body': forms.Textarea(attrs={
+                'placeholder': 'Texte',
+                'class': "form-control",
+                'rows': 5,
+            })
         }
         labels = {
             "headline": "Titre de la critique",
@@ -46,7 +73,8 @@ class FollowForm(forms.Form):
         max_length=128,
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Nom d'utilisateur"
+                "placeholder": "Nom d'utilisateur",
+                "class": "col-lg-8"
             }),
         label=""
     )
