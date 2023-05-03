@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2 class="text-center mb-4">Modifier le ticket</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {{ edit_form.as_p }}
         {% csrf_token %}
         <div class="text-end">

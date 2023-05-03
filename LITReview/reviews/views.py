@@ -76,12 +76,13 @@ def new_ticket(request):
 @login_required
 def edit_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
-    edit_form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
-        edit_form = forms.TicketForm(request.POST, instance=ticket)
+        edit_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
         if edit_form.is_valid():
             edit_form.save()
-            return redirect('home')
+            return redirect('posts')
+    else:
+        edit_form = forms.TicketForm(instance=ticket)
     context = {
         'edit_form': edit_form,
     }

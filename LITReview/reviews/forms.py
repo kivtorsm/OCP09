@@ -25,7 +25,7 @@ class TicketForm(forms.ModelForm):
                 'class': "form-control",
                 'rows': 5,
             }),
-            'image': forms.FileInput(attrs={
+            'image': forms.ClearableFileInput(attrs={
                 'class': "form-control"
             })
         }
@@ -40,14 +40,14 @@ class ReviewForm(forms.ModelForm):
         widgets = {
             'rating': forms.RadioSelect(
                 choices=[
-                    (0, "- 0"),
-                    (1, "- 1"),
-                    (2, "- 2"),
-                    (3, "- 3"),
-                    (4, "- 4"),
-                    (5, "- 5")],
+                    (0, "0"),
+                    (1, "1"),
+                    (2, "2"),
+                    (3, "3"),
+                    (4, "4"),
+                    (5, "5")],
                 attrs={
-                    'class': "form-check form-check-inline",
+                    'class': "ms-4",
                 },
             ),
             'headline': forms.TextInput(attrs={
