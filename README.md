@@ -49,12 +49,19 @@ to create your project folder
     > https//:127.0.0.1:8000/home
 
 ## Test Data
+### URLs
+| Page  | URL                          |
+|-------|------------------------------|
+| Home  | http://127.0.0.1:8000/home/  |
+| Admin | http://127.0.0.1:8000/admin/ |
+
 ### Users
-Log-in|Password|Role
----|---|---
-admin-oc | ocp09litreview | Superuser
-toto | toto | user
-coco | coco | user 
+| Log-in   | Password       | Role      |
+|----------|----------------|-----------|
+| admin-oc | ocp09litreview | Superuser |
+| toto     | ocp09litreview | user      |
+| coco     | ocp09litreview | user      |
+| momo     | ocp09litreview | user      |
 
 ### Database
 Initialised data in `db.sqlite3`
