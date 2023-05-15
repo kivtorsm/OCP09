@@ -3,6 +3,7 @@ from itertools import chain
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db.models import Q
 
 from . import models, forms
@@ -174,25 +175,32 @@ def follows(request):
     follow_form = forms.FollowForm()
     followed_users = models.UserFollows.objects.filter(user=request.user)
     following_users = models.UserFollows.objects.filter(followed_user=request.user)
+    toast_type = None
+    toast_message = ""
     if request.method == 'POST':
         follow_form = forms.FollowForm(request.POST)
         if follow_form.is_valid():
             username_to_follow = follow_form.cleaned_data["followed_user"]
             if username_to_follow not in [user.username for user in User.objects.all()]:
-                return redirect('follows')
+                messages.warning(request, "L'utilisateur n'existe pas")
+                # return redirect('follows')
             else:
                 followed_user = User.objects.get(username=username_to_follow)
                 if followed_user == request.user:
-                    return redirect('follows')
+                    messages.warning(request, "Vous ne pouvez pas vous suivre vous-même")
+
+                    # return redirect('follows')
                 elif followed_user in [
                     User.objects.get(
                         id=user.followed_user.id) for user in models.UserFollows.objects.filter(user=request.user)
                 ]:
-                    return redirect('follows')
+                    messages.warning(request, "Vous êtes déjà abonné à cet utilisateur")
+                    # return redirect('follows')
                 else:
                     user_follows = models.UserFollows(user=request.user, followed_user=followed_user)
                     user_follows.save()
-                    return redirect('follows')
+                    messages.success(request, "Utilisateur ajouté à la liste des abonnements")
+                    # return redirect('follows')
     context = {
         'followed_users': followed_users,
         'following_users': following_users,

@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
 {% block content %}
     <h2 class="container text-center mb-4">Suivre d'autres utilisateurs</h2>
     <form method="post" class="form-inline row row-cols-auto align-middle my-4">
@@ -26,6 +36,5 @@
                 </tr>
             {% endfor %}
         </table>
-
 
 {% endblock content %}
