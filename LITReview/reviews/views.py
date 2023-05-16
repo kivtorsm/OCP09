@@ -183,24 +183,23 @@ def follows(request):
             username_to_follow = follow_form.cleaned_data["followed_user"]
             if username_to_follow not in [user.username for user in User.objects.all()]:
                 messages.warning(request, "L'utilisateur n'existe pas")
-                # return redirect('follows')
+                return redirect('follows')
             else:
                 followed_user = User.objects.get(username=username_to_follow)
                 if followed_user == request.user:
                     messages.warning(request, "Vous ne pouvez pas vous suivre vous-même")
-
-                    # return redirect('follows')
+                    return redirect('follows')
                 elif followed_user in [
                     User.objects.get(
                         id=user.followed_user.id) for user in models.UserFollows.objects.filter(user=request.user)
                 ]:
                     messages.warning(request, "Vous êtes déjà abonné à cet utilisateur")
-                    # return redirect('follows')
+                    return redirect('follows')
                 else:
                     user_follows = models.UserFollows(user=request.user, followed_user=followed_user)
                     user_follows.save()
                     messages.success(request, "Utilisateur ajouté à la liste des abonnements")
-                    # return redirect('follows')
+                    return redirect('follows')
     context = {
         'followed_users': followed_users,
         'following_users': following_users,
