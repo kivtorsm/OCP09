@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load reviews_extras %}
+{% block content %}
+
+    <h2 class="container text-center mb-4">Vos posts</h2>
+
+    {% for instance in tickets_and_reviews %}
+        {% if instance|model_type == 'Ticket' %}
+            {% include 'reviews/partials/ticket_snippet.html' with ticket=instance type='ticket_alone' %}
+        {% elif instance|model_type == 'Review' %}
+            {% include 'reviews/partials/review_snippet.html' with review=instance %}
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock content %}

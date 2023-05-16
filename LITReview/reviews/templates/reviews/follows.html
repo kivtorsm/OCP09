@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block content %}
+    <h2 class="container text-center mb-4">Suivre d'autres utilisateurs</h2>
+    <form method="post" class="form-inline row row-cols-auto align-middle my-4">
+        {{ follow_form|crispy }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary mb-4">Envoyer</button>
+    </form>
+    <h2 class="my-4">Abonnements</h2>
+        <table class="table table-bordered">
+            {% for user in followed_users %}
+                <tr>
+                    <td>{{ user.followed_user }}</td>
+                    <td class="text-end col-1"><a href="{% url 'unfollow' user_follows_id=user.id %}">Désabonner</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    <h2 class="my-4">Abonnés</h2>
+
+        <table class="table table-bordered">
+            {% for user in following_users %}
+                <tr>
+                    <td>{{ user.user }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+{% endblock content %}

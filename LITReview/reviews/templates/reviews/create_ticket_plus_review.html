@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 class="text-center mb-4">Créer une critique</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="border p-2">
+            <p class="fw-bold">Livre / article</p>
+            <div class="m-4">
+                {{ ticket_form.as_p }}
+            </div>
+        </div>
+        <div class="border-start border-end border-bottom p-2">
+            <p class="fw-bold">Critique</p>
+            <div class="m-4">
+                {{ review_form.as_p }}
+                {% csrf_token %}
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

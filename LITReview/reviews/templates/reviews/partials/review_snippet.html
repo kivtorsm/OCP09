@@ -1,0 +1,30 @@
+{% load reviews_extras %}
+
+<div class="review shadow-sm p-3 mb-5 bg-body rounded">
+    <div class="row justify-content-between">
+        <div class="col">
+            <p>{% get_poster_display review.user %} publié une critique </p>
+        </div>
+        <div class="col text-end">
+            <p>{{ review.time_created }}</p>
+        </div>
+    </div>
+
+    <p class="fs-5">{{ review.headline }} -
+        <span>{% include 'reviews/partials/rating_snippet.html' with rating=review.rating %}</span></p>
+
+    <p>{{ review.body }}</p>
+    <div class="row">
+        <div class="col text-end">
+            {% if page == 'my_posts' %}
+            <a href="{% url 'edit_review' review.id %}" class="btn btn-primary">Modifier</a>
+            <a href="{% url 'delete_review' review.id %}" class="btn btn-outline-primary">Supprimer</a>
+    {% endif %}
+        </div>
+    </div>
+
+    <div>
+        {% include 'reviews/partials/ticket_snippet.html' with ticket=review.ticket caller="Review" %}
+    </div>
+
+</div>

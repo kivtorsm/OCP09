@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load reviews_extras %}
+{% block content %}
+
+<div class="container">
+    <div class="container">
+        <div class="row d-flex justify-content-evenly">
+            <a class="btn btn-primary col-4" href="{% url 'new_ticket' %}">Demander une critique</a>
+            <a class="btn btn-outline-primary col-4" href="{% url 'create_ticket_plus_review' %}">Créer une critique</a>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        {% for instance in tickets_and_reviews %}
+        <div class="row gy-5 ">
+
+            {% if instance|model_type == 'Ticket' %}
+                {% include 'reviews/partials/ticket_snippet.html' with ticket=instance review=None %}
+
+            {% elif instance|model_type == 'Review' %}
+                {% include 'reviews/partials/review_snippet.html' with review=instance %}
+            {% endif %}
+
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock content %}

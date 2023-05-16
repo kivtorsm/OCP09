@@ -1,0 +1,29 @@
+.ratings{
+    margin-right:10px;
+}
+
+.ratings i{
+
+    color:#cecece;
+    font-size:32px;
+}
+
+.rating-color{
+    color:#fbc634 !important;
+}
+
+.small-ratings i{
+  color:#cecece;
+}
+
+div#id_rating{
+    display: flex;
+}
+
+div#div_id_password1 label{
+    display: none;
+}
+
+div#div_id_password2 label{
+    display: none;
+}
