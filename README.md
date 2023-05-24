@@ -36,8 +36,10 @@ to create your project folder
 - From your terminal or IDLE, install all packages listed in requirements.txt
     > $ pip install -r requirements.txt
 
-### 5. Create database
-- From your terminal or IDLE, from the manage.py location folder, migrate DB:
+### 5. Create database (optional) or use existing database
+- You can use existing example database provided :
+    > db.sqlite3
+- Or you can create a new database. From your terminal or IDLE, from the manage.py location folder, migrate DB:
     > $ python manage.py migrate
 
 ### 6. Run Server
